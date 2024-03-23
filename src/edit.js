@@ -4,6 +4,9 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import ImageList from './components/ImageList';
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -11,7 +14,8 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, __experimentalInputControl as InputControl, Button } from '@wordpress/components';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -29,13 +33,60 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit( { attributes, setAttributes } ) {
+	const [ term, setTerm ] = useState( 'cars' );
+	const [ images, setImages ] = useState( [] );
+	const { unsplashAPIKey } = attributes;
+
+	const handleOnChange = ( ( value ) => {
+		setAttributes( { unsplashAPIKey: value } );
+	});
+
+	const handleSearch = ( ( value ) => {
+		setTerm( value );
+	});
+
+	const searchImages = async ( term ) => {
+		const response = await axios.get('https://api.unsplash.com/search/photos', {
+			headers: {
+				Authorization: 'Client-ID ' + unsplashAPIKey,
+			},
+			params: {
+				query: term,
+			},
+		});
+		setImages( response.data.results );
+	};
+
+	useEffect(() => {
+		searchImages( term );
+	}, [term]);
+
+	useEffect(() => {
+		setAttributes( { unsplashAPIKey: unsplashAPIKey } );
+	}, [unsplashAPIKey]);
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __(
-				'Photo Gallery Block – hello from the editor!',
-				'photo-gallery-block'
-			) }
-		</p>
+		<>
+			<InspectorControls>
+				<PanelBody title={ __( 'Settings', 'photo-gallery-block' ) }>
+					<InputControl
+						type='string'
+						label={ __( 'Unsplash Access Key', 'photo-gallery-block' ) }
+						value={ unsplashAPIKey || ''}
+						onChange={ handleOnChange }
+					/>
+					<InputControl
+						type='string'
+						label={ __( 'Search Term', 'photo-gallery-block' ) }
+						value={ term }
+						onChange={ handleSearch }
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<div { ...useBlockProps() }>
+				<ImageList images={images}/>
+			</div>
+		</>
 	);
 }

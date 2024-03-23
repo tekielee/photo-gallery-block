@@ -6,8 +6,13 @@
 	"title": "Photo Gallery Block",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "A block photo gallery with unsplah image api.",
 	"example": {},
+	"attributes": {
+		"unsplashAPIKey": {
+			"type": "string"
+		}
+	},
 	"supports": {
 		"html": false
 	},

@@ -21,5 +21,6 @@
  */
 
 /* eslint-disable no-console */
+console.log('cong');
 console.log( 'Hello World! (from create-block-photo-gallery-block block)' );
 /* eslint-enable no-console */
