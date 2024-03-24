@@ -28,3 +28,22 @@ function photo_gallery_block_photo_gallery_block_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
 add_action( 'init', 'photo_gallery_block_photo_gallery_block_block_init' );
+
+if ( !function_exists ( 'ajax_save_settings_handler' ) ) {
+
+    function ajax_save_settings_handler () {
+        
+        update_option ( 'unsplash_api_key', $_POST['unsplash_api_key'] );
+
+		update_option ( 'term', $_POST['term'] );
+
+		update_option ( 'images', $_POST['images'] );
+
+        echo 'Settings have been updated successfully';
+
+        wp_die();
+    }
+
+}
+
+add_action( 'wp_ajax_save_settings', 'ajax_save_settings_handler' );

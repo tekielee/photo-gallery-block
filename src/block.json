@@ -8,11 +8,6 @@
 	"icon": "smiley",
 	"description": "A block photo gallery with unsplah image api.",
 	"example": {},
-	"attributes": {
-		"unsplashAPIKey": {
-			"type": "string"
-		}
-	},
 	"supports": {
 		"html": false
 	},

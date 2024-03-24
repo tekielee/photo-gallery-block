@@ -15,7 +15,11 @@ import ImageList from './components/ImageList';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, __experimentalInputControl as InputControl, Button } from '@wordpress/components';
+import { 
+	PanelBody, __experimentalInputControl as InputControl, 
+	Button
+} from '@wordpress/components';
+
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -33,13 +37,19 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
-	const [ term, setTerm ] = useState( 'cars' );
-	const [ images, setImages ] = useState( [] );
-	const { unsplashAPIKey } = attributes;
+import { store } from './store/store';
+import { useSelect, dispatch } from '@wordpress/data';
 
-	const handleOnChange = ( ( value ) => {
-		setAttributes( { unsplashAPIKey: value } );
+export default function Edit() {
+	const currentUnsplashAPIKey = useSelect(store).getUnsplashAPIKey();
+	const currentImages = useSelect(store).getImages();
+	const currentTerm = useSelect(store).getTerm();
+	const [ term, setTerm ] = useState( currentTerm );
+	const [ unsplashAPIKey, setUnsplashAPIKey ] = useState( currentUnsplashAPIKey );
+	const [ images, setImages ] = useState( currentImages );
+
+	const handleOnChange = ( ( unsplashAPIKey ) => {
+		setUnsplashAPIKey(unsplashAPIKey);
 	});
 
 	const handleSearch = ( ( value ) => {
@@ -55,20 +65,36 @@ export default function Edit( { attributes, setAttributes } ) {
 				query: term,
 			},
 		});
-		setImages( response.data.results );
+		setImages(response.data.results);
+	};
+
+	const saveSettings = () => {
+		/*dispatch(store).setUnsplashAPIKey( unsplashAPIKey );
+		dispatch(store).setTerm( term );
+		dispatch(store).setImages( images );*/
+		let params = new URLSearchParams();
+		params.append('action', 'save_settings');
+ 		params.append('unsplash_api_key', unsplashAPIKey);
+		params.append('term', term);
+		params.append('images', images);
+
+		axios.post('/wp-admin/admin-ajax.php', params);
+
 	};
 
 	useEffect(() => {
-		searchImages( term );
-	}, [term]);
+		if ( unsplashAPIKey && term ) {
+			searchImages( term );
+		}
+	}, [term, unsplashAPIKey]);
 
 	useEffect(() => {
-		setAttributes( { unsplashAPIKey: unsplashAPIKey } );
+		handleOnChange( unsplashAPIKey );
 	}, [unsplashAPIKey]);
 
 	return (
 		<>
-			<InspectorControls>
+			<InspectorControls>				
 				<PanelBody title={ __( 'Settings', 'photo-gallery-block' ) }>
 					<InputControl
 						type='string'
@@ -79,9 +105,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<InputControl
 						type='string'
 						label={ __( 'Search Term', 'photo-gallery-block' ) }
-						value={ term }
+						value={ term || '' }
 						onChange={ handleSearch }
 					/>
+					<Button onClick={saveSettings} variant="primary">Save</Button>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
