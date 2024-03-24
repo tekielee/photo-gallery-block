@@ -1,4 +1,5 @@
 import { createReduxStore, register } from '@wordpress/data';
+import { store as coreDataStore } from '@wordpress/core-data';
 
 const DEFAULT_STATE = {
 	unsplashAPIKey: '',

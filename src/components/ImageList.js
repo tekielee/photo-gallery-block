@@ -8,7 +8,7 @@ function ImageList( { images } ) {
     });
 
 	return (
-        <div className="image-list">{renderedImages}</div>
+        <div className="image-lists">{renderedImages}</div>
 	);
 }
 

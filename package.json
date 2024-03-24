@@ -16,5 +16,17 @@
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "27.4.0"
+	},
+	"browser": {
+		"crypto": false
+	},
+	"dependencies": {
+		"crypto": "^1.0.1",
+		"crypto-browserify": "^3.12.0",
+		"crypto-js": "^4.2.0",
+		"dotenv": "^16.4.5",
+		"mysql": "github:mysqljs/mysql",
+		"os": "^0.1.2",
+		"path": "^0.12.7"
 	}
 }

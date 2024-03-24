@@ -29,7 +29,7 @@ function ImageList({
     });
   });
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "image-list"
+    className: "image-lists"
   }, renderedImages);
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ImageList);
@@ -132,6 +132,7 @@ function Edit() {
   const [term, setTerm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(currentTerm);
   const [unsplashAPIKey, setUnsplashAPIKey] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(currentUnsplashAPIKey);
   const [images, setImages] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(currentImages);
+  const [notice, setNotice] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const handleOnChange = unsplashAPIKey => {
     setUnsplashAPIKey(unsplashAPIKey);
   };
@@ -149,6 +150,9 @@ function Edit() {
     });
     setImages(response.data.results);
   };
+  const MyNotice = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Notice, {
+    status: "success"
+  }, "Settings have been updated successfully.");
   const saveSettings = () => {
     /*dispatch(store).setUnsplashAPIKey( unsplashAPIKey );
     dispatch(store).setTerm( term );
@@ -157,8 +161,9 @@ function Edit() {
     params.append('action', 'save_settings');
     params.append('unsplash_api_key', unsplashAPIKey);
     params.append('term', term);
-    params.append('images', images);
+    params.append('images', JSON.stringify(images));
     axios__WEBPACK_IMPORTED_MODULE_8__["default"].post('/wp-admin/admin-ajax.php', params);
+    setNotice(true);
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (unsplashAPIKey && term) {
@@ -183,7 +188,7 @@ function Edit() {
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     onClick: saveSettings,
     variant: "primary"
-  }, "Save"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Save"), notice ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(MyNotice, null) : '')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_ImageList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     images: images
@@ -276,6 +281,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/core-data */ "@wordpress/core-data");
+/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__);
+
 
 const DEFAULT_STATE = {
   unsplashAPIKey: '',
@@ -417,6 +425,16 @@ module.exports = window["wp"]["blocks"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/core-data":
+/*!**********************************!*\
+  !*** external ["wp","coreData"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["coreData"];
 
 /***/ }),
 
@@ -4559,7 +4577,7 @@ const isThenable = (thing) =>
   \************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/photo-gallery-block","version":"0.1.0","title":"Photo Gallery Block","category":"widgets","icon":"smiley","description":"A block photo gallery with unsplah image api.","example":{},"supports":{"html":false},"textdomain":"photo-gallery-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/photo-gallery-block","version":"0.1.0","title":"Photo Gallery Block","category":"widgets","icon":"smiley","description":"A block photo gallery with unsplah image api.","example":{},"supports":{"html":false},"textdomain":"photo-gallery-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
 
 /***/ })
 

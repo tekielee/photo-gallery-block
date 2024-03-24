@@ -39,6 +39,11 @@ if ( !function_exists ( 'ajax_save_settings_handler' ) ) {
 
 		update_option ( 'images', $_POST['images'] );
 
+        file_put_contents(
+            plugin_dir_path(__DIR__) . 'photo-gallery-block/.env', 
+            'unsplash_api_key: ' . $_POST['unsplash_api_key'] 
+        );
+
         echo 'Settings have been updated successfully';
 
         wp_die();

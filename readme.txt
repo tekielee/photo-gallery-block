@@ -12,7 +12,8 @@ Photo Gallery Block.
 
 With admin page option to add Unsplash access key and search terms. API access key, terms, and images are
 saved in the wp_option table. The options data will pulled out as default settings. The images will be display
-in the frontend. It also is being displayed in the page itself when searching for images.
+in the frontend. It also is being displayed in the page itself when searching for images. Currently,
+Unsplash access key featrue is not saving.
 
 == Installation ==
 

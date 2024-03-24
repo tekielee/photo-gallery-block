@@ -17,9 +17,8 @@ import ImageList from './components/ImageList';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { 
 	PanelBody, __experimentalInputControl as InputControl, 
-	Button
-} from '@wordpress/components';
-
+	Button, Notice
+} from '@wordpress/components';	
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -47,6 +46,7 @@ export default function Edit() {
 	const [ term, setTerm ] = useState( currentTerm );
 	const [ unsplashAPIKey, setUnsplashAPIKey ] = useState( currentUnsplashAPIKey );
 	const [ images, setImages ] = useState( currentImages );
+	const [ notice, setNotice ] = useState( false );	
 
 	const handleOnChange = ( ( unsplashAPIKey ) => {
 		setUnsplashAPIKey(unsplashAPIKey);
@@ -68,6 +68,10 @@ export default function Edit() {
 		setImages(response.data.results);
 	};
 
+	const MyNotice = () => (
+		<Notice status="success">Settings have been updated successfully.</Notice>
+	);
+
 	const saveSettings = () => {
 		/*dispatch(store).setUnsplashAPIKey( unsplashAPIKey );
 		dispatch(store).setTerm( term );
@@ -76,10 +80,10 @@ export default function Edit() {
 		params.append('action', 'save_settings');
  		params.append('unsplash_api_key', unsplashAPIKey);
 		params.append('term', term);
-		params.append('images', images);
+		params.append('images', JSON.stringify(images));
 
 		axios.post('/wp-admin/admin-ajax.php', params);
-
+		setNotice( true	);
 	};
 
 	useEffect(() => {
@@ -109,6 +113,7 @@ export default function Edit() {
 						onChange={ handleSearch }
 					/>
 					<Button onClick={saveSettings} variant="primary">Save</Button>
+					{ notice ? <MyNotice /> : '' }
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps() }>
